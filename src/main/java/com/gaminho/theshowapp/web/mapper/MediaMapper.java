@@ -45,14 +45,13 @@ public class MediaMapper {
             final String mediaDriveUrl = media.getGoogleDriveURL();
             if (StringUtils.isNotBlank(mediaDriveUrl)) {
                 log.debug("Start downloading media from drive: {}", mediaDriveUrl);
-                final InputStream in = downloadFile(service, file);
-//OLD                final InputStream in = new URL(mediaDriveUrl).openStream();
+//                final InputStream in = downloadFile(service, file);
+                final InputStream in = new URL(mediaDriveUrl).openStream();
                 if (null != in) {
                     final String name = generateFileName(media.getName(), type);
                     final String generatePath = generateMediaPath(artistName, name);
                     try {
-                        Files.copy(in, Paths.get(generateMediaPath(artistName, name)),
-                                StandardCopyOption.REPLACE_EXISTING);
+                        Files.copy(in, Paths.get(generatePath), StandardCopyOption.REPLACE_EXISTING);
                         media.setPathToFile(generatePath);
                     } catch (Exception e) {
                         log.error("something went wrong during file download: {}",
@@ -91,6 +90,8 @@ public class MediaMapper {
                             resp.getStatusCode(), resp.getStatusMessage());
                     return null;
                 } else {
+                    log.info("Downloading (code={}): {}",
+                            resp.getStatusCode(), resp.getStatusMessage());
                     return resp.getContent();
                 }
             } catch (IOException e) {
