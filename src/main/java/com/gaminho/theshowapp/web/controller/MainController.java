@@ -163,7 +163,7 @@ public class MainController {
 
             final byte[] bytes = file.getBytes();
             final Path path = Paths.get(formatUploadedFileName(file, fileName));
-            Files.write(path, bytes);
+            Files.write(path,bytes);
         }
     }
 
