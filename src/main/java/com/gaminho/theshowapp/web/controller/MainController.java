@@ -45,7 +45,7 @@ public class MainController {
     private RapperRepository rapperRepository;
 
 
-    @GetMapping(value="/test1")
+    @GetMapping(value = "/test1")
     public ResponseEntity<Project> test() {
         Project project = new Project();
         project.setName("Project of " + new SimpleDateFormat("yyyy/MM/dd'T'HH:mm:ss").format(new Date()));
@@ -58,19 +58,19 @@ public class MainController {
         return ResponseEntity.ok(projectRepository.save(project));
     }
 
-    @GetMapping(value="/test2")
+    @GetMapping(value = "/test2")
     public ResponseEntity<List<Project>> test2() {
-        List <Project> list =  projectRepository.findAll();
+        List<Project> list = projectRepository.findAll();
         log.info("Get projects: {}", list.size());
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping(value="/test4")
+    @GetMapping(value = "/test4")
     public ResponseEntity<Rapper> test4() {
         return ResponseEntity.ok(rapperRepository.save(getRapper()));
     }
 
-    private static Rapper getRapper(){
+    private static Rapper getRapper() {
         Rapper rapper = new Rapper();
 
         Media media = new Media();
@@ -114,7 +114,7 @@ public class MainController {
 
     @GetMapping(value = "/test6",
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<?> getAllPlebs(){
+    public ResponseEntity<?> getAllPlebs() {
         File initialFile = new File("test.mp3");
         try {
             InputStream targetStream = new FileInputStream(initialFile);
@@ -163,18 +163,19 @@ public class MainController {
 
             final byte[] bytes = file.getBytes();
             final Path path = Paths.get(formatUploadedFileName(file, fileName));
-            Files.write(path,bytes);
+            Files.write(path, bytes);
         }
     }
 
     /**
      * Format the uploaded file name keeping original extension
+     *
      * @param uploadedFile the uploaded file to rename
-     * @param customName the custom name
+     * @param customName   the custom name
      * @return the formatted file name
      */
     private static String formatUploadedFileName(@NotNull final MultipartFile uploadedFile,
-                                                 @NotNull final String customName){
+                                                 @NotNull final String customName) {
         final String extension = FilenameUtils.getExtension(uploadedFile.getOriginalFilename());
         return PathConstants.RES_PATH.concat(customName).concat(".")
                 .concat(StringUtils.isNotBlank(extension) ? extension : "");
